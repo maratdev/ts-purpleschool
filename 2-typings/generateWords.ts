@@ -1,25 +1,28 @@
 declare let require: any
 
 let makeOrdinal = require('./makeOrdinal');
-let isIfinite = require('./isFinite');
+let isInfinite = require('./isFinite');
 let isSafeNumber = require('./isSafeNumber');
 
-const TEN = 10;
-const ONE_HUNDRED = 100;
-const ONE_THOUSAND = 1000;
-const ONE_MILLION = 1000000;
-const ONE_BILLION = 1000000000;           //         1.000.000.000 (9)
-const ONE_TRILLION = 1000000000000;       //     1.000.000.000.000 (12)
-const ONE_QUADRILLION = 1000000000000000; // 1.000.000.000.000.000 (15)
-const MAX = 9007199254740992;             // 9.007.199.254.740.992 (15)
+const enum NumberOrders {
+  TEN = 10,
+  ONE_HUNDRED = 100,
+  ONE_THOUSAND = 1000,
+  ONE_MILLION = 1000000,
+  ONE_BILLION = 1000000000,
+  ONE_TRILLION = 1000000000000,
+  ONE_QUADRILLION = 1000000000000000,
+  MAX = 9007199254740992,
+}
 
-const LESS_THAN_TWENTY = [
-    'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
-    'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'
+
+const LESS_THAN_TWENTY: readonly string[] = [
+  'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
+  'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'
 ];
 
-const TENTHS_LESS_THAN_HUNDRED = [
-    'zero', 'ten', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'
+const TENTHS_LESS_THAN_HUNDRED: readonly string[] = [
+  'zero', 'ten', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'
 ];
 
 /**
@@ -31,82 +34,87 @@ const TENTHS_LESS_THAN_HUNDRED = [
  * @returns {string}
  */
 
-function toWords(number, asOrdinal) {
-    let words;
-    let num = parseInt(number, 10);
+function toWords(number: number[] | string, asOrdinal: boolean): string {
+  let words;
+  let num: number = parseInt(String(number), 10);
 
-    if (!isFinites(num)) {
-        throw new TypeError(
-            'Not a finite number: ' + number + ' (' + typeof number + ')'
-        );
-    }
-    if (!isSafeNumber(num)) {
-        throw new RangeError(
-            'Input is not a safe number, it’s either too large or too small.'
-        );
-    }
-    words = generateWords(num);
-    return asOrdinal ? makeOrdinal(words) : words;
+  if (!isInfinite(num)) {
+    throw new TypeError(
+      'Not a finite number: ' + number + ' (' + typeof number + ')'
+    );
+  }
+  if (!isSafeNumber(num)) {
+    throw new RangeError(
+      'Input is not a safe number, it’s either too large or too small.'
+    );
+  }
+  words = generateWords(num);
+  return asOrdinal ? makeOrdinal(words) : words;
 }
 
-function generateWords(number) {
-    let remainder, word,
-        words = arguments[1];
 
-    // We’re done
-    if (number === 0) {
-        return !words ? 'zero' : words.join(' ').replace(/,$/, '');
-    }
-    // First run
-    if (!words) {
-        words = [];
-    }
-    // If negative, prepend “minus”
-    if (number < 0) {
-        words.push('minus');
-        number = Math.abs(number);
-    }
+const generateWords = (num: number, words?: string[]): string => {
+  let remainder: number = 0,
+    word: string = '';
 
-    if (number < 20) {
+  // First run
+  if (!words) {
+    words = [];
+  }
+
+  // We’re done
+  if (num === 0) return !words ? 'zero' : words.join(' ').replace(/,$/, '');
+
+
+  // If negative, prepend “minus”
+  if (num < 0) {
+    words.push('minus');
+    num = Math.abs(num);
+  }
+
+
+  switch (num < 20) {
+
+    case (num < NumberOrders.ONE_HUNDRED):
+      remainder = num % NumberOrders.TEN;
+      word = TENTHS_LESS_THAN_HUNDRED[Math.floor(num / NumberOrders.TEN)];
+      if (remainder) {
+        word += `-${LESS_THAN_TWENTY[remainder]}`;
         remainder = 0;
-        word = LESS_THAN_TWENTY[number];
+      }
+      break;
 
-    } else if (number < ONE_HUNDRED) {
-        remainder = number % TEN;
-        word = TENTHS_LESS_THAN_HUNDRED[Math.floor(number / TEN)];
-        // In case of remainder, we need to handle it here to be able to add the “-”
-        if (remainder) {
-            word += '-' + LESS_THAN_TWENTY[remainder];
-            remainder = 0;
-        }
+    case (num < NumberOrders.ONE_THOUSAND):
+      remainder = num % NumberOrders.ONE_HUNDRED;
+      word = generateWords(Math.floor(num / NumberOrders.ONE_HUNDRED)) + ' hundred';
+      break;
+    case  (num < NumberOrders.ONE_MILLION):
+      remainder = num % NumberOrders.ONE_THOUSAND;
+      word = generateWords(Math.floor(num / NumberOrders.ONE_THOUSAND)) + ' thousand,';
+      break;
+    case (num < NumberOrders.ONE_BILLION):
+      remainder = num % NumberOrders.ONE_MILLION;
+      word = generateWords(Math.floor(num / NumberOrders.ONE_MILLION)) + ' million,';
+      break;
+    case (num < NumberOrders.ONE_TRILLION):
+      remainder = num % NumberOrders.ONE_BILLION;
+      word = generateWords(Math.floor(num / NumberOrders.ONE_BILLION)) + ' billion,';
+      break;
+    case (num < NumberOrders.ONE_QUADRILLION):
+      remainder = num % NumberOrders.ONE_TRILLION;
+      word = generateWords(Math.floor(num / NumberOrders.ONE_TRILLION)) + ' trillion,';
+      break;
+    case (num <= NumberOrders.MAX):
+      remainder = num % NumberOrders.ONE_QUADRILLION;
+      word = generateWords(Math.floor(num / NumberOrders.ONE_QUADRILLION)) + ' quadrillion,';
+      break;
+    default:
+      word = LESS_THAN_TWENTY[num];
+      break;
+  }
 
-    } else if (number < ONE_THOUSAND) {
-        remainder = number % ONE_HUNDRED;
-        word = generateWords(Math.floor(number / ONE_HUNDRED)) + ' hundred';
+  words.push(word);
+  return generateWords(remainder, words);
+};
 
-    } else if (number < ONE_MILLION) {
-        remainder = number % ONE_THOUSAND;
-        word = generateWords(Math.floor(number / ONE_THOUSAND)) + ' thousand,';
-
-    } else if (number < ONE_BILLION) {
-        remainder = number % ONE_MILLION;
-        word = generateWords(Math.floor(number / ONE_MILLION)) + ' million,';
-
-    } else if (number < ONE_TRILLION) {
-        remainder = number % ONE_BILLION;
-        word = generateWords(Math.floor(number / ONE_BILLION)) + ' billion,';
-
-    } else if (number < ONE_QUADRILLION) {
-        remainder = number % ONE_TRILLION;
-        word = generateWords(Math.floor(number / ONE_TRILLION)) + ' trillion,';
-
-    } else if (number <= MAX) {
-        remainder = number % ONE_QUADRILLION;
-        word = generateWords(Math.floor(number / ONE_QUADRILLION)) +
-        ' quadrillion,';
-    }
-
-    words.push(word);
-    return generateWords(remainder, words);
-}
-
+export default toWords;
