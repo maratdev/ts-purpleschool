@@ -22,8 +22,9 @@ const adminCoast: ISectionAdmin = {
   ...userCoast,
   role: 1
 }
+
 // возьмем нужные поля
-function  userToAdmin(user: ISectionUser): ISectionAdmin{
+function userToAdmin(user: ISectionUser): ISectionAdmin {
   return {
     username: user.username,
     role: 1
