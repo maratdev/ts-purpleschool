@@ -1,5 +1,11 @@
 "use strict";
 const url = 'https://dummyjson.com/user';
+const options = {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+};
 var HttpStatusCode;
 (function (HttpStatusCode) {
     HttpStatusCode[HttpStatusCode["CONTINUE"] = 100] = "CONTINUE";
@@ -8,12 +14,6 @@ var HttpStatusCode;
     HttpStatusCode[HttpStatusCode["NOT_FOUND"] = 404] = "NOT_FOUND";
     HttpStatusCode[HttpStatusCode["BAD_GATEWAY"] = 502] = "BAD_GATEWAY";
 })(HttpStatusCode || (HttpStatusCode = {}));
-const options = {
-    method: 'GET',
-    headers: {
-        'Content-Type': 'application/json'
-    }
-};
 fetch(url, options)
     .then((res) => {
     if (res.status === HttpStatusCode.CONTINUE) {
