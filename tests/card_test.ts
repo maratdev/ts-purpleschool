@@ -117,7 +117,7 @@ class Cart implements ICart {
   checkout() {
     console.log('Thank you for your order!');
     console.log(`Products: ${this.products.map(function (num) {
-        return num.name;
+        return(num.name);
       })}`
     );
 
@@ -144,11 +144,15 @@ let orderDate = today.toLocaleString();
 
 const cart = new Cart();
 
-const milk = new Product(1, 'Молоко', 800);
-cart.addProduct(milk)
+cart.addProduct(new Product(1, 'Молоко', 50))
+cart.addProduct(new Product(2, 'Кефир', 50))
+cart.addProduct(new Product(3, 'Батон', 50))
+
+cart.removeProductById(2)
 
 const toStore = new DeliveryPickup('pick-point', orderDate, 777);
 const toHome = new DeliveryHome('home', orderDate, 'г Москва, ул Павелецкая, 4к2 кв 37');
 cart.setDelivery(toStore);
 
 cart.checkout()
+console.log(`Общая сумма: ${cart.calculateTotalCost()} `)
