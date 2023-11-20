@@ -1,0 +1,1 @@
+{"version":3,"file":"test_5.js","sourceRoot":"","sources":["../../src/tests/test_5.ts"],"names":[],"mappings":";AAAA,MAAM,eAAe;IAMnB,SAAS,CAAC,aAAgC;QACxC,IAAI,OAAO,aAAa,IAAI,QAAQ,EAAE;YACpC,IAAI,CAAC,MAAM,CAAC,IAAI,CAAC,GAAG,aAAa,CAAC,CAAA;SACnC;IACH,CAAC;CACF;AAED,MAAM,GAAG,GAAG,IAAI,eAAe,EAAE,CAAC;AAClC,GAAG,CAAC,SAAS,CAAC,KAAK,CAAC,CAAA"}
