@@ -1,5 +1,8 @@
 "use strict";
 class Product {
+    id;
+    name;
+    price;
     constructor(id, name, price) {
         this.id = id;
         this.name = name;
@@ -7,12 +10,15 @@ class Product {
     }
 }
 class Delivery {
+    type;
+    date;
     constructor(type, date) {
         this.type = type;
         this.date = date;
     }
 }
 class DeliveryHome extends Delivery {
+    address;
     constructor(type, date, address) {
         super(type, date);
         this.address = address;
@@ -24,6 +30,7 @@ class DeliveryHome extends Delivery {
     }
 }
 class DeliveryPickup extends Delivery {
+    storeId;
     constructor(type, date, storeId) {
         super(type, date);
         this.storeId = storeId;
@@ -35,6 +42,10 @@ class DeliveryPickup extends Delivery {
     }
 }
 class Cart {
+    deliveryHome;
+    deliveryPickup;
+    products;
+    delivery;
     constructor() {
         this.products = [];
     }

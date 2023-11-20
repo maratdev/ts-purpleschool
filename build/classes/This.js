@@ -1,14 +1,12 @@
 "use strict";
 class PaymentThis {
-    constructor() {
-        this.date = new Date();
-        this.getDateArrow = () => {
-            return this.date;
-        };
-    }
+    date = new Date();
     getDate() {
         return this.date;
     }
+    getDateArrow = () => {
+        return this.date;
+    };
 }
 const p = new PaymentThis();
 const userThis = {

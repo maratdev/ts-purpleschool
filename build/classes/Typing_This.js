@@ -1,5 +1,6 @@
 "use strict";
 class UserBuilder {
+    name;
     setName(name) {
         this.name = name;
         return this;
@@ -9,6 +10,7 @@ class UserBuilder {
     }
 }
 class AdminBuilder extends UserBuilder {
+    roles;
 }
 const resBuilder = new UserBuilder().setName('Вася');
 const resBuilderAdmin = new AdminBuilder().setName('Вася');

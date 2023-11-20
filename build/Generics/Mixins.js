@@ -1,22 +1,19 @@
 "use strict";
 //нам понадобится класс, к которому будут применены миксины:
 class Sprite {
+    name = "";
+    x = 0;
+    y = 0;
     constructor(name) {
-        this.name = "";
-        this.x = 0;
-        this.y = 0;
         this.name = name;
     }
 }
 // Миксин, который добавляет свойство
 function Scale(Base) {
     return class Scaling extends Base {
-        constructor() {
-            super(...arguments);
-            // Миксины не могут объявлять частные/защищенные свойства
-            // однако вы можете использовать поля ES2020  private
-            this._scale = 1;
-        }
+        // Миксины не могут объявлять частные/защищенные свойства
+        // однако вы можете использовать поля ES2020  private
+        _scale = 1;
         setScale(scale) {
             this._scale = scale;
         }

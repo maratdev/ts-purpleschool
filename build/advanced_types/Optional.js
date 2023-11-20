@@ -12,7 +12,6 @@ function multiply(first, second) {
     return first * second;
 }
 function testPass(user) {
-    var _a;
-    const passType = (_a = user.password) === null || _a === void 0 ? void 0 : _a.type;
+    const passType = user.password?.type;
 }
 //# sourceMappingURL=Optional.js.map

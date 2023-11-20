@@ -1,7 +1,7 @@
 //Тип Union в TypeScript позволяет объединить несколько типов в один.
 // Это полезно для описания значений, которые могут принадлежать к разным типам, но имеют общие свойства или поведение.
 
-function logId(id: string | number | boolean) {
+function logIdUnion(id: string | number | boolean) {
   if (typeof id === 'string') { // сужение типов
     console.log(id + '1')
   } else if (typeof id === 'number') {

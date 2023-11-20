@@ -1,5 +1,7 @@
 "use strict";
 class UserClassConstr {
+    name;
+    age;
     constructor(nameOrAge, age) {
         if (typeof nameOrAge === 'string') {
             this.name = nameOrAge;

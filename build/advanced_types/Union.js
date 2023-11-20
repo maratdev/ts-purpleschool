@@ -1,7 +1,7 @@
 "use strict";
 //Тип Union в TypeScript позволяет объединить несколько типов в один.
 // Это полезно для описания значений, которые могут принадлежать к разным типам, но имеют общие свойства или поведение.
-function logId(id) {
+function logIdUnion(id) {
     if (typeof id === 'string') { // сужение типов
         console.log(id + '1');
     }
