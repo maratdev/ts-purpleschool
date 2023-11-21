@@ -6,6 +6,10 @@ var PaymentStatus;
     PaymentStatus[PaymentStatus["Reversed"] = 2] = "Reversed";
 })(PaymentStatus || (PaymentStatus = {}));
 class PaymentClass {
+    id;
+    status;
+    createAt;
+    updateAt;
     constructor(id) {
         this.id = id;
         this.createAt = new Date();

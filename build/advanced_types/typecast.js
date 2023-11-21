@@ -5,7 +5,10 @@ const userCoast = {
     userEmail: 'alex@mail.ru'
 };
 // скопируем все поля
-const adminCoast = Object.assign(Object.assign({}, userCoast), { role: 1 });
+const adminCoast = {
+    ...userCoast,
+    role: 1
+};
 // возьмем нужные поля
 function userToAdmin(user) {
     return {

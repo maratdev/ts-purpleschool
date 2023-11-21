@@ -1,5 +1,8 @@
 "use strict";
 class SetUser {
+    _login;
+    password;
+    createAt;
     set login(l) {
         this._login = 'user-' + l;
         this.createAt = new Date();
