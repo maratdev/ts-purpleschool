@@ -8,7 +8,7 @@ function swapPropValues(obj, keyType) {
             delete obj[key];
         }
     }
-    return Object.assign(Object.assign({}, res), obj);
+    return { ...res, ...obj };
 }
 const obj = { a: 1, b: 2, c: 5 };
 const resultSwap = swapPropValues(obj, 'number');
