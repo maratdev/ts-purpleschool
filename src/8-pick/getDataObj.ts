@@ -5,8 +5,7 @@ const UserObj = {
 }
 
 function getDataObj<T, K extends keyof T>(obj: T, keys: K[]): object {
-  const result: { [P in K]+?: T[P] } = {};
-
+  let result: any = {};
   keys.forEach((key) => {
     result[key] = obj[key];
   });
