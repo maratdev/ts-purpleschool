@@ -31,7 +31,7 @@ function logObj(obj: { a: number } | { b: number }) { // Свойства в о�
 }
 logObj({a: 1,  b: 2000 });
 
-function doSomething(user: { firstName: string, pointsCount: number}) {
+function doSomethingUnion(user: { firstName: string, pointsCount: number}) {
   if ('firstName' in user){
     console.log(user.firstName)
   }
@@ -40,7 +40,7 @@ function doSomething(user: { firstName: string, pointsCount: number}) {
   }
 }
 
-doSomething({ firstName: 'Alice', pointsCount: 2000 });
+doSomethingUnion({ firstName: 'Alice', pointsCount: 2000 });
 // Так нельзя
 //! doSomething({ firstName: 'Bob' });
 // И так тоже
