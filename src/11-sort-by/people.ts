@@ -16,3 +16,4 @@ people.sort(sortBy('name'));
 
 // Сортировка по возрасту по убыванию
 people.sort(sortBy('age'));
+
